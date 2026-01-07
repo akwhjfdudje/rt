@@ -23,40 +23,24 @@ add_library(gpu_runtime STATIC
     src/core/op.cpp
     src/core/stream.cpp
     src/runtime_api.cpp
+    ${ADAPTER_SRC}
+)
+
+file(GLOB_RECURSE ADAPTER_SRC
+    "kernel_adapters/src/*.cu"
+)
+file(GLOB_RECURSE ADAPTER_INCLUDE
+    "kernel_adapters/include"
 )
 
 target_include_directories(gpu_runtime PUBLIC
     include
-    kernels/include
+    ${ADAPTER_INCLUDE}
 )
 
 target_link_libraries(gpu_runtime PUBLIC
     CUDA::cudart
 )
-
-# CUDA kernels
-add_library(cuda_kernels STATIC
-    kernels/src/matmul.cu
-    kernels/src/add.cu
-    kernels/src/relu.cu
-    kernels/src/noise.cu
-    kernels/src/heightmap.cu
-    kernels/src/fuse.cu
-)
-
-set_target_properties(cuda_kernels PROPERTIES
-    CUDA_SEPARABLE_COMPILATION ON
-)
-
-target_include_directories(cuda_kernels PUBLIC
-    kernels/include
-)
-
-target_link_libraries(cuda_kernels PUBLIC
-    CUDA::cudart
-)
-
-target_link_libraries(gpu_runtime PUBLIC cuda_kernels)
 
 # Debug / visualization
 if (GPU_RUNTIME_ENABLE_DEBUG)
@@ -73,16 +57,6 @@ if (GPU_RUNTIME_ENABLE_DEBUG)
     target_compile_definitions(gpu_runtime PUBLIC GPU_RUNTIME_DEBUG=1)
 endif()
 
-# CPU reference kernels
-add_library(cpu_reference STATIC
-    src/cpu/matmul_cpu.cpp
-    src/cpu/noise_cpu.cpp
-    src/cpu/fuse_cpu.cpp
-)
-
-target_include_directories(cpu_reference PUBLIC include)
-target_link_libraries(gpu_runtime PUBLIC cpu_reference)
-
 # MLIR integration
 if (GPU_RUNTIME_ENABLE_MLIR)
     find_package(MLIR REQUIRED CONFIG)
@@ -93,10 +67,5 @@ if (GPU_RUNTIME_ENABLE_MLIR)
     add_definitions(${MLIR_DEFINITIONS})
 
     add_subdirectory(mlir)
-endif()
-
-# Examples
-if (GPU_RUNTIME_BUILD_EXAMPLES)
-    add_subdirectory(examples)
 endif()
 
