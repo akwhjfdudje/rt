@@ -1,11 +1,8 @@
 add_library(RuntimeMLIR STATIC
     lib/Runtime/RuntimeDialect.cpp
-    lib/Runtime/RuntimeTypes.cpp
     lib/Runtime/RuntimeOps.cpp
+    lib/Runtime/RuntimeTypes.cpp
     lib/Runtime/LowerToRuntime.cpp
-    lib/Runtime/LowerDebugOps.cpp
-    lib/Runtime/LowerVisualizationOps.cpp
-    lib/Runtime/LowerReplayOps.cpp
     lib/Runtime/Passes.cpp
 )
 
