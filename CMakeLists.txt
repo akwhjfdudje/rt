@@ -16,7 +16,6 @@ find_package(CUDAToolkit REQUIRED)
 
 # Core runtime library
 add_library(gpu_runtime STATIC
-    # REQUIRED core
     src/core/tensor.cpp
     src/core/allocator.cpp
     src/core/graph.cpp
