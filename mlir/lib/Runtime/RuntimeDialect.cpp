@@ -1,7 +1,7 @@
 #include "Runtime/RuntimeDialect.h"
 #include "mlir/IR/OpImplementation.h"
 #include "mlir/IR/Types.h"
-#include "mlir/Parser.h"
+#include "mlir/Parser/Parser.h"
 #include "mlir/Support/LLVM.h"
 
 namespace rt {
@@ -25,17 +25,17 @@ mlir::ParseResult AllocOp::parse(mlir::OpAsmParser &parser, mlir::OperationState
 }
 
 void AllocOp::print(mlir::OpAsmPrinter &p, AllocOp op) {
-  p << "rt.alloc" << " : " << op.getType();
+  p << "rt.alloc" << " : " << op.getResultTypes(0);
 }
 
-void MatMulOp::build(mlir::OpBuilder &builder, mlir::OperationState &state, mlir::Value lhs, mlir::Value rhs) {
+void MatMulOp::build(mlir::OpBuilder &builder, mlir::OperationState &state, mlir::Value lhs, mlir::Value rhs, mlir::Type type) {
   state.addOperands(lhs);
   state.addOperands(rhs);
-  state.addTypes(lhs.getType());  // The result type matches the lhs type
+  state.addTypes(type);  // The result type matches the lhs type
 }
 
 mlir::ParseResult MatMulOp::parse(mlir::OpAsmParser &parser, mlir::OperationState &result) {
-  mlir::OpAsmParser::OperandType lhs, rhs;
+  mlir::OpAsmParser::UnresolvedOperand lhs, rhs;
   mlir::Type type;
 
   if (parser.parseOperand(lhs) || parser.parseComma() || parser.parseOperand(rhs) || parser.parseColonType(type))
@@ -48,7 +48,7 @@ mlir::ParseResult MatMulOp::parse(mlir::OpAsmParser &parser, mlir::OperationStat
 }
 
 void MatMulOp::print(mlir::OpAsmPrinter &p, MatMulOp op) {
-  p << "rt.matmul " << op.getOperand(0) << ", " << op.getOperand(1) << " : " << op.getType();
+  p << "rt.matmul " << op.getOperand(0) << ", " << op.getOperand(1) << " : " << op.getResultType(0);
 }
 
 } // namespace rt

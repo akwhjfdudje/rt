@@ -1,6 +1,5 @@
 add_library(RuntimeMLIR STATIC
     lib/Runtime/RuntimeDialect.cpp
-    lib/Runtime/LowerToRuntime.cpp
     lib/Runtime/Passes.cpp
 )
 

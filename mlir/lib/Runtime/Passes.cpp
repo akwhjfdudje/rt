@@ -1,3 +1,4 @@
+#include "Runtime/RuntimeDialect.h"
 #include "adapters/include/matrix_mul_adapter.h"
 #include "core/tensor.h"
 

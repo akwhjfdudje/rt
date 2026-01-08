@@ -9,7 +9,7 @@ class RTDialect : public mlir::Dialect {
 public:
   explicit RTDialect(mlir::MLIRContext *context);
   static llvm::StringRef getDialectNamespace() { return "rt"; }
-  void initialize() override;
+  void initialize();
 };
 
 // Define the operations
@@ -25,14 +25,14 @@ public:
   static void print(mlir::OpAsmPrinter &p, AllocOp op);
 };
 
-class MatMulOp : public mlir::Op<MatMulOp, mlir::OpTrait::TwoOperands, mlir::OpTrait::OneResult> {
+class MatMulOp : public mlir::Op<MatMulOp, mlir::OpTrait::NOperands<2>::Impl, mlir::OpTrait::OneResult> {
 public:
   using Op::Op;
 
   static mlir::StringRef getOperationName() { return "rt.matmul"; }
 
   // Parse and print methods
-  static void build(mlir::OpBuilder &builder, mlir::OperationState &state, mlir::Value lhs, mlir::Value rhs);
+  static void build(mlir::OpBuilder &builder, mlir::OperationState &state, mlir::Value lhs, mlir::Value rhs, mlir::Type type);
   static mlir::ParseResult parse(mlir::OpAsmParser &parser, mlir::OperationState &result);
   static void print(mlir::OpAsmPrinter &p, MatMulOp op);
 };
