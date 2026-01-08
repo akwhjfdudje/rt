@@ -7,7 +7,6 @@ namespace rt {
 
 void lowerOperation(Operation* op,
                     std::map<Value, Tensor*>& tensors) {
-
     if (auto alloc = dyn_cast<AllocOp>(op)) {
         auto type = alloc.getType().cast<TensorType>();
         auto shape = type.getShape();
@@ -20,24 +19,17 @@ void lowerOperation(Operation* op,
     if (auto mm = dyn_cast<MatMulOp>(op)) {
         Tensor* A = tensors[mm.getOperand(0)];
         Tensor* B = tensors[mm.getOperand(1)];
-        Tensor* C = tensors[mm.getResult(0)];
+
+        auto type = mm.getResult().getType().cast<TensorType>();
+        auto shape = type.getShape();
+
+        Tensor* C = new Tensor(shape, sizeof(float));
+        tensors[mm.getResult()] = C;
 
         rt_matrixMul(A, B, C);
         return;
     }
 }
-
-struct RuntimeExecPass
-    : public PassWrapper<RuntimeExecPass, OperationPass<ModuleOp>> {
-
-  void runOnOperation() override {
-    ModuleOp module = getOperation();
-    std::map<Value, Tensor*> tensors;
-
-    module.walk([&](Operation *op) {
-      rt::lowerOperation(op, tensors);
-    });
-  }
 };
 
 
