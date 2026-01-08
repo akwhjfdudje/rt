@@ -1,22 +1,32 @@
-#include "mlir/Pass/Pass.h"
 #include "Runtime/RuntimeOps.h"
+#include "adapters/include/matrix_mul_adapter.h"
+#include "core/tensor.h"
+
+using namespace mlir;
 
 namespace rt {
-struct LowerRtPass : public mlir::PassWrapper<LowerRtPass, mlir::OperationPass<mlir::ModuleOp>> {
-    void runOnOperation() override {
-        auto module = getOperation();
-        // Iterate ops and call lowering functions
-        module.walk([&](mlir::Operation *op) {
-            if (auto noiseOp = llvm::dyn_cast<NoiseOp>(op)) {
-                // Lower to runtime
-                // fill in Tensor* and seed from operands
-            }
-        });
-    }
-};
-} // namespace rt
 
-std::unique_ptr<mlir::Pass> createLowerRtPass() {
-    return std::make_unique<rt::LowerRtPass>();
+void lowerOperation(Operation* op,
+                    std::map<Value, Tensor*>& tensors) {
+
+    if (auto alloc = dyn_cast<AllocOp>(op)) {
+        auto type = alloc.getType().cast<TensorType>();
+        auto shape = type.getShape();
+
+        Tensor* t = new Tensor(shape, sizeof(float));
+        tensors[alloc.getResult()] = t;
+        return;
+    }
+
+    if (auto mm = dyn_cast<MatMulOp>(op)) {
+        Tensor* A = tensors[mm.getOperand(0)];
+        Tensor* B = tensors[mm.getOperand(1)];
+        Tensor* C = tensors[mm.getResult(0)];
+
+        rt_matrixMul(A, B, C);
+        return;
+    }
 }
+
+} // namespace rt
 
