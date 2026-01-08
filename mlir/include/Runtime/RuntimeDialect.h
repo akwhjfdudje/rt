@@ -4,12 +4,15 @@
 #include "mlir/IR/Types.h"
 #include "mlir/IR/Builders.h"
 
+#define GET_OP_CLASSES
+#include "RuntimeOps.h.inc"
+
 namespace rt {
 class RTDialect : public mlir::Dialect {
 public:
   explicit RTDialect(mlir::MLIRContext *context);
   static llvm::StringRef getDialectNamespace() { return "rt"; }
-  void initialize();
+  //void initialize() override;
 };
 
 // Define the operations
@@ -22,7 +25,10 @@ public:
   // Parse and print methods
   static void build(mlir::OpBuilder &builder, mlir::OperationState &state, mlir::Type type);
   static mlir::ParseResult parse(mlir::OpAsmParser &parser, mlir::OperationState &result);
-  static void print(mlir::OpAsmPrinter &p, AllocOp op);
+  // static void print(mlir::OpAsmPrinter &p, AllocOp op);
+
+  // Additional redundant methods:
+  static llvm::ArrayRef<llvm::StringRef> getAttributeNames();
 };
 
 class MatMulOp : public mlir::Op<MatMulOp, mlir::OpTrait::NOperands<2>::Impl, mlir::OpTrait::OneResult> {
@@ -34,7 +40,10 @@ public:
   // Parse and print methods
   static void build(mlir::OpBuilder &builder, mlir::OperationState &state, mlir::Value lhs, mlir::Value rhs, mlir::Type type);
   static mlir::ParseResult parse(mlir::OpAsmParser &parser, mlir::OperationState &result);
-  static void print(mlir::OpAsmPrinter &p, MatMulOp op);
+  // static void print(mlir::OpAsmPrinter &p, MatMulOp op);
+
+  // Additional redundant methods:
+  static llvm::ArrayRef<llvm::StringRef> getAttributeNames();
 };
 
 } // namespace rt

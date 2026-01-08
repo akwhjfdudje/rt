@@ -1,3 +1,10 @@
+set(LLVM_TARGET_DEFINITIONS RuntimeOps.td)
+
+mlir_tablegen(RuntimeOps.h.inc -gen-op-decls)
+mlir_tablegen(RuntimeOps.cpp.inc -gen-op-defs)
+
+add_public_tablegen_target(RuntimeOpsIncGen)
+
 add_library(RuntimeMLIR STATIC
     lib/Runtime/RuntimeDialect.cpp
     lib/Runtime/Passes.cpp
@@ -5,6 +12,7 @@ add_library(RuntimeMLIR STATIC
 
 target_include_directories(RuntimeMLIR PUBLIC
     include
+    ../adapters/include
 )
 
 target_link_libraries(RuntimeMLIR PUBLIC
