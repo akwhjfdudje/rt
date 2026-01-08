@@ -1,4 +1,3 @@
-#include "Runtime/RuntimeOps.h"
 #include "adapters/include/matrix_mul_adapter.h"
 #include "core/tensor.h"
 
@@ -27,6 +26,20 @@ void lowerOperation(Operation* op,
         return;
     }
 }
+
+struct RuntimeExecPass
+    : public PassWrapper<RuntimeExecPass, OperationPass<ModuleOp>> {
+
+  void runOnOperation() override {
+    ModuleOp module = getOperation();
+    std::map<Value, Tensor*> tensors;
+
+    module.walk([&](Operation *op) {
+      rt::lowerOperation(op, tensors);
+    });
+  }
+};
+
 
 } // namespace rt
 
