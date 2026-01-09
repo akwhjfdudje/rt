@@ -1,5 +1,5 @@
 #include "matrix_mul_adapter.h"
-#include "linalg/matrix_mul.cuh"
+#include "linalg/linalg.cuh"
 #include "debug/trace.h"
 #include "debug/snapshot.h"
 #include "debug/guard.h"
