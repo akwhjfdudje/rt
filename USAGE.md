@@ -22,6 +22,13 @@ To add a kernel, see the `adapters/` directory for examples on provided adapters
 
 # Building
 
+TableGen, in `mlir/include/Runtime`:
+
+```
+/path/to/mlir-tblgen/bin -gen-op-defs RuntimeDialect.td -o RuntimeDialect.cpp.inc -I /path/to/include/dir
+/path/to/mlir-tblgen/bin -gen-op-decls RuntimeDialect.td -o RuntimeDialect.h.inc -I /path/to/include/dir
+```
+
 To build the project:
 
 ```

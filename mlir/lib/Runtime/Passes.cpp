@@ -9,7 +9,7 @@ namespace rt {
 void lowerOperation(Operation* op,
                     std::map<Value, Tensor*>& tensors) {
     if (auto alloc = dyn_cast<AllocOp>(op)) {
-        auto type = alloc.getType().cast<TensorType>();
+        auto type = alloc.getType().cast<AnyTensor>();
         auto shape = type.getShape();
 
         Tensor* t = new Tensor(shape, sizeof(float));
@@ -21,7 +21,7 @@ void lowerOperation(Operation* op,
         Tensor* A = tensors[mm.getOperand(0)];
         Tensor* B = tensors[mm.getOperand(1)];
 
-        auto type = mm.getResult().getType().cast<TensorType>();
+        auto type = mm.getResult().getType().cast<AnyTensor>();
         auto shape = type.getShape();
 
         Tensor* C = new Tensor(shape, sizeof(float));

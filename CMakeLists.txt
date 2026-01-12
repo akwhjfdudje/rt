@@ -62,7 +62,10 @@ if (GPU_RUNTIME_ENABLE_MLIR)
 
     message(STATUS "Found MLIR: ${MLIR_DIR}")
 
-    include_directories(${MLIR_INCLUDE_DIRS})
+    include_directories(
+        ${MLIR_INCLUDE_DIRS}
+        ${LLVM_INCLUDE_DIRS}
+    )
     add_definitions(${MLIR_DEFINITIONS})
 
     add_subdirectory(mlir)

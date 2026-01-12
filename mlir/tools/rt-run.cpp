@@ -2,7 +2,6 @@
 #include "mlir/Parser.h"
 #include "mlir/IR/BuiltinOps.h"
 #include "Runtime/RuntimeDialect.h"
-#include "Runtime/LowerToRuntime.h"
 #include "core/tensor.h"
 
 #include <map>
