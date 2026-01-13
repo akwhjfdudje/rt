@@ -1,6 +1,7 @@
 #include "mlir/IR/MLIRContext.h"
 #include "mlir/Parser/Parser.h"
 #include "mlir/IR/BuiltinOps.h"
+#include "llvm/Support/LogicalResult.h"
 #include "Runtime/RuntimeDialect.h"
 #include "core/tensor.h"
 

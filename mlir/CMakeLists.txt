@@ -13,6 +13,7 @@ target_link_libraries(RuntimeMLIR PUBLIC
     MLIRIR
     MLIRPass
     MLIRFuncDialect
+    LLVMSupport
 )
 
 add_executable(rt-run tools/rt-run.cpp)
