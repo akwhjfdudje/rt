@@ -32,10 +32,11 @@ TableGen, in `mlir/include/Runtime`:
 To build the project:
 
 ```
-cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DMLIR_DIR="/path/to/MLIR/install/with/cmake" 
-cmake --build build --config Release
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug -DMLIR_DIR="/path/to/MLIR/install/with/cmake" 
+cmake --build build --config Debug
 ```
 
+Note that the build is configured to "Debug". This is because MLIR compiles to "Debug" by default.
 # Running
 
 To run, use the `rt-run` tool with the chosen `.mlir` file.
