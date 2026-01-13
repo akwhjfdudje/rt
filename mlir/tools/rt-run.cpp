@@ -15,9 +15,6 @@ int main(int argc, char** argv) {
     mlir::MLIRContext ctx;
     ctx.getOrLoadDialect<rt::RT_Dialect>();
 
-    mlir::PassManager pm(&ctx);
-    pm.addPass(rt::lowerOperation());
-
     auto module = mlir::parseSourceFile(argv[1], &ctx);
     if (!module) return 1;
 

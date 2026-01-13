@@ -17,4 +17,3 @@ target_link_libraries(RuntimeMLIR PUBLIC
 
 add_executable(rt-run tools/rt-run.cpp)
 target_link_libraries(rt-run RuntimeMLIR)
-

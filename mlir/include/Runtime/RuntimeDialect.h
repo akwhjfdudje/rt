@@ -5,6 +5,7 @@
 #include "mlir/IR/OpImplementation.h"
 #include "mlir/IR/Types.h"
 #include "mlir/IR/Builders.h"
+#include "core/tensor.h"
 
 #define GET_OP_CLASSES
 #include "./RuntimeDialect.h.inc"
@@ -16,4 +17,5 @@ public:
   static llvm::StringRef getDialectNamespace() { return "rt"; }
   void initialize();
 };
+void lowerOperation(mlir::Operation* op, llvm::DenseMap<mlir::Value, Tensor*>& tensors);
 }
