@@ -22,7 +22,7 @@ int main(int argc, char** argv) {
     return 1;
 
     // Maps MLIR SSA values → runtime tensors
-    std::map<mlir::Value, Tensor*> tensors;
+    std::map<const mlir::Value, Tensor*> tensors;
 
     // Walk ops in program order
     module->walk([&](mlir::Operation* op) {

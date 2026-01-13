@@ -7,7 +7,7 @@ using namespace mlir;
 
 namespace rt {
 
-void lowerOperation(mlir::Operation* op, std::map<Value, Tensor*>& tensors) {
+void lowerOperation(mlir::Operation* op, std::map<const Value, Tensor*>& tensors) {
     if (auto alloc = dyn_cast<AllocOp>(op)) {
         auto type = alloc.getType();
         auto shape = type.getShape();
