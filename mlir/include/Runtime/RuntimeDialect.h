@@ -17,30 +17,3 @@ public:
   void initialize();
 };
 }
-
-/*
-// Define the operations
-class AllocOp : public mlir::Op<AllocOp, mlir::OpTrait::ZeroOperands, mlir::OpTrait::OneResult> {
-public:
-  using Op::Op;
-
-  static mlir::StringRef getOperationName() { return "rt.alloc"; }
-
-  // Parse and print methods
-  static void build(mlir::OpBuilder &builder, mlir::OperationState &state, mlir::Type type);
-  static mlir::ParseResult parse(mlir::OpAsmParser &parser, mlir::OperationState &result);
-};
-
-class MatMulOp : public mlir::Op<MatMulOp, mlir::OpTrait::NOperands<2>::Impl, mlir::OpTrait::OneResult> {
-public:
-  using Op::Op;
-
-  static mlir::StringRef getOperationName() { return "rt.matmul"; }
-
-  // Parse and print methods
-  static void build(mlir::OpBuilder &builder, mlir::OperationState &state, mlir::Value lhs, mlir::Value rhs, mlir::Type type);
-  static mlir::ParseResult parse(mlir::OpAsmParser &parser, mlir::OperationState &result);
-};
-
-} // namespace rt
-*/
