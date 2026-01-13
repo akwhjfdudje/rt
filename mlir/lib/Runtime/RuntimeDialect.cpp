@@ -5,9 +5,9 @@
 using namespace mlir;
 using namespace rt;
 
-#include "./RuntimeDialect.cpp.inc"
+#include "Runtime/RuntimeDialect.cpp.inc"
 
-void RuntimeDialect::initialize() {
+void RT_Dialect::initialize() {
   addOperations<
 #define GET_OP_LIST
 #include "Runtime/RuntimeDialect.cpp.inc"
@@ -15,10 +15,14 @@ void RuntimeDialect::initialize() {
 }
 
 // Constructor for the RT dialect.
-RTDialect::RTDialect(mlir::MLIRContext *context) : mlir::Dialect(getDialectNamespace(), context, mlir::TypeID::get<RTDialect>()) {
-  addOperations<AllocOp, MatMulOp>();
+RT_Dialect::RT_Dialect(mlir::MLIRContext *context) : mlir::Dialect(getDialectNamespace(), context, mlir::TypeID::get<RT_Dialect>()) {
+  addOperations<
+#define GET_OP_LIST
+#include "Runtime/RuntimeDialect.cpp.inc"
+      >();
 }
 
+/*
 // Build an AllocOp operation
 void AllocOp::build(mlir::OpBuilder &builder, mlir::OperationState &state, mlir::Type type) {
   state.addTypes(type);
@@ -58,4 +62,4 @@ mlir::ParseResult MatMulOp::parse(mlir::OpAsmParser &parser, mlir::OperationStat
 void MatMulOp::print(mlir::OpAsmPrinter &p, MatMulOp op) {
   p << "rt.matmul " << op.getOperand(0) << ", " << op.getOperand(1) << " : " << op.getResultType(0);
 }
-
+*/

@@ -3,14 +3,14 @@
 #include <cstring>
 #include <stdexcept>
 
-Tensor Allocator::allocate(const std::vector<int>& shape,
+Tensor Allocator::allocate(const std::vector<int64_t>& shape,
                            size_t element_size,
                            DeviceType device) {
     Tensor t;
     t.shape = shape;
     t.device_type = device;
     t.bytes = element_size;
-    for (int d : shape) t.bytes *= d;
+    for (size_t d : shape) t.bytes *= d;
 
     if (device == DeviceType::CUDA) {
         cudaError_t err = cudaMalloc(&t.device, t.bytes);

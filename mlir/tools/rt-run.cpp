@@ -13,7 +13,7 @@ int main(int argc, char** argv) {
     }
 
     mlir::MLIRContext ctx;
-    ctx.getOrLoadDialect<rt::RuntimeDialect>();
+    ctx.getOrLoadDialect<rt::RT_Dialect>();
 
     auto module = mlir::parseSourceFile(argv[1], &ctx);
     if (!module) return 1;
@@ -22,11 +22,11 @@ int main(int argc, char** argv) {
     return 1;
 
     // Maps MLIR SSA values → runtime tensors
-    llvm::DenseMap<mlir::Value, Tensor*> tensorMap;
+    std::map<mlir::Value, Tensor*> tensors;
 
     // Walk ops in program order
     module->walk([&](mlir::Operation* op) {
-        rt::lowerOperation(op, tensorMap);
+        rt::lowerOperation(op, tensors);
     });
 
     return 0;

@@ -26,19 +26,21 @@ add_library(gpu_runtime STATIC
 )
 
 file(GLOB_RECURSE ADAPTER_SRC
-    "kernel_adapters/src/*.cu"
+    "adapters/src/*.cpp"
 )
 file(GLOB_RECURSE ADAPTER_INCLUDE
-    "kernel_adapters/include"
+    "adapters/include"
 )
 
 target_include_directories(gpu_runtime PUBLIC
     include
+    ${CMAKE_CURRENT_SOURCE_DIR}/../cuda_kernels/include
     ${ADAPTER_INCLUDE}
 )
 
 target_link_libraries(gpu_runtime PUBLIC
     CUDA::cudart
+    ${CMAKE_CURRENT_SOURCE_DIR}/../cuda_kernels/build/Release/cuda_kernels.lib
 )
 
 # Debug / visualization

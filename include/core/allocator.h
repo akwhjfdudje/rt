@@ -3,7 +3,7 @@
 
 class Allocator {
 public:
-    Tensor allocate(const std::vector<int>& shape,
+    static Tensor allocate(const std::vector<int64_t>& shape,
                     size_t element_size,
                     DeviceType device = DeviceType::CUDA);
 

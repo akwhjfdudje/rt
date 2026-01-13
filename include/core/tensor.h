@@ -11,13 +11,13 @@ enum class DeviceType {
 struct Tensor {
     void* device = nullptr;   // CUDA device pointer
     void* host   = nullptr;   // Optional host mirror
-    std::vector<int> shape;
+    std::vector<int64_t> shape;
     size_t bytes = 0;
     DeviceType device_type = DeviceType::CUDA;
 
     size_t numel() const {
         size_t n = 1;
-        for (int d : shape) n *= d;
+        for (size_t d : shape) n *= d;
         return n;
     }
 };

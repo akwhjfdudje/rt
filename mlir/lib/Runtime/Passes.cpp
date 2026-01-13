@@ -1,19 +1,19 @@
 #include "Runtime/RuntimeDialect.h"
+#include "mlir/Pass/Pass.h"
 #include "matrix_mul_adapter.h"
-#include "core/tensor.h"
+#include "core/allocator.h"
 
 using namespace mlir;
 
 namespace rt {
 
-void lowerOperation(Operation* op,
-                    std::map<Value, Tensor*>& tensors) {
+void lowerOperation(mlir::Operation* op, std::map<Value, Tensor*>& tensors) {
     if (auto alloc = dyn_cast<AllocOp>(op)) {
-        auto type = alloc.getType().cast<AnyTensor>();
+        auto type = alloc.getType();
         auto shape = type.getShape();
 
-        Tensor* t = new Tensor(shape, sizeof(float));
-        tensors[alloc.getResult()] = t;
+        Tensor t = Allocator::allocate(shape.vec(), sizeof(type));
+        tensors[alloc.getResult()] = &t;
         return;
     }
 
@@ -21,18 +21,15 @@ void lowerOperation(Operation* op,
         Tensor* A = tensors[mm.getOperand(0)];
         Tensor* B = tensors[mm.getOperand(1)];
 
-        auto type = mm.getResult().getType().cast<AnyTensor>();
+        auto type = mm.getResult().getType();
         auto shape = type.getShape();
 
-        Tensor* C = new Tensor(shape, sizeof(float));
-        tensors[mm.getResult()] = C;
+        Tensor C = Allocator::allocate(shape.vec(), sizeof(type));
+        rt_matrixMul(A, B, &C);
 
-        rt_matrixMul(A, B, C);
+        tensors[mm.getResult()] = &C;
         return;
     }
 }
-};
-
 
 } // namespace rt
-
