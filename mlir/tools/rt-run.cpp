@@ -1,5 +1,5 @@
 #include "mlir/IR/MLIRContext.h"
-#include "mlir/Parser.h"
+#include "mlir/Parser/Parser.h"
 #include "mlir/IR/BuiltinOps.h"
 #include "Runtime/RuntimeDialect.h"
 #include "core/tensor.h"
@@ -15,14 +15,14 @@ int main(int argc, char** argv) {
     mlir::MLIRContext ctx;
     ctx.getOrLoadDialect<rt::RT_Dialect>();
 
+    mlir::PassManager pm(&ctx);
+    pm.addPass(rt::lowerOperation());
+
     auto module = mlir::parseSourceFile(argv[1], &ctx);
     if (!module) return 1;
-    if (failed(module->verify())) {
-        llvm::errs() << "Module verification failed\n";
-    return 1;
 
-    // Maps MLIR SSA values → runtime tensors
-    std::map<const mlir::Value, Tensor*> tensors;
+    // Maps MLIR SSA values to runtime tensors
+    llvm::DenseMap<mlir::Value, Tensor*> tensors;
 
     // Walk ops in program order
     module->walk([&](mlir::Operation* op) {
