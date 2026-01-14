@@ -14,6 +14,10 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 # CUDA
 find_package(CUDAToolkit REQUIRED)
 
+file(GLOB_RECURSE ADAPTER_SRC
+    ${CMAKE_CURRENT_SOURCE_DIR}/adapters/src/*.cpp
+)
+
 # Core runtime library
 add_library(gpu_runtime STATIC
     src/core/tensor.cpp
@@ -23,19 +27,13 @@ add_library(gpu_runtime STATIC
     src/core/stream.cpp
     src/runtime_api.cpp
     ${ADAPTER_SRC}
-)
-
-file(GLOB_RECURSE ADAPTER_SRC
-    "adapters/src/*.cpp"
-)
-file(GLOB_RECURSE ADAPTER_INCLUDE
-    "adapters/include"
+    ${CMAKE_CURRENT_SOURCE_DIR}/../cuda_kernels/include/
 )
 
 target_include_directories(gpu_runtime PUBLIC
     include
     ${CMAKE_CURRENT_SOURCE_DIR}/../cuda_kernels/include
-    ${ADAPTER_INCLUDE}
+    ${CMAKE_CURRENT_SOURCE_DIR}/adapters/include
 )
 
 target_link_libraries(gpu_runtime PUBLIC

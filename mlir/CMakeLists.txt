@@ -14,7 +14,14 @@ target_link_libraries(RuntimeMLIR PUBLIC
     MLIRPass
     MLIRFuncDialect
     LLVMSupport
+    MLIRSupport
+    MLIRParser
+    MLIRDialect
+    MLIRAsmParser
+    MLIRTableGen
+    MLIRTranslateLib
 )
 
 add_executable(rt-run tools/rt-run.cpp)
+
 target_link_libraries(rt-run RuntimeMLIR)
