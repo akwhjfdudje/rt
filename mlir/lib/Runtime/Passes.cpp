@@ -4,7 +4,6 @@
 #include "core/allocator.h"
 
 namespace mlir::rt {
-
     void lowerOperation(mlir::Operation* op, llvm::DenseMap<Value, Tensor*>& tensors) {
         if (auto alloc = dyn_cast<AllocOp>(op)) {
             auto type = alloc.getType();
@@ -28,6 +27,17 @@ namespace mlir::rt {
             tensors[mm.getResult()] = &C;
             return;
         }
+
+        if (auto noise = dyn_cast<NoiseOp>(op)) {
+            Tensor* A = tensors[noise.getOperand()];
+
+            auto type = noise.getResult().getType();
+            auto shape = type.getShape();
+
+            Tensor t = Allocator::allocate(shape.vec(), sizeof(type));
+            tensors[noise.getResult()] = &t;
+            return;
+        }
     }
 
-} // namespace rt
+} // namespace mlir::rt

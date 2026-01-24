@@ -26,3 +26,12 @@ def MatMulOp : RT_Op<"matmul", [Pure, SameOperandsAndResultType]> {
   let assemblyFormat = "$lhs `,` $rhs attr-dict `:` type($result)";
 }
 
+// %A1 = rt.noise %A : tensor<...>
+def NoiseOp : RT_Op<"noise", [Pure, SameOperandsAndResultType]> {
+  let summary = "Noise a tensor";
+  let arguments = (ins AnyTensor:$input);
+  let results = (outs AnyTensor:$result);
+  let assemblyFormat = "$input attr-dict `:` type($result)";
+}
+
+
