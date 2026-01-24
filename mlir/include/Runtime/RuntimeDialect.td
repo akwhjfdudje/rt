@@ -19,7 +19,7 @@ def AllocOp : RT_Op<"alloc", [Pure]> {
 
 
 // %C = rt.matmul %A, %B : tensor<...>
-def MatMulOp : RT_Op<"matmul", [Pure]> {
+def MatMulOp : RT_Op<"matmul", [Pure, SameOperandsAndResultType]> {
   let summary = "Matrix multiplication";
   let arguments = (ins AnyTensor:$lhs, AnyTensor:$rhs);
   let results = (outs AnyTensor:$result);
