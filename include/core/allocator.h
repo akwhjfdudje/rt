@@ -8,5 +8,6 @@ public:
                     DeviceType device = DeviceType::CUDA);
 
     void free(Tensor& t);
+    void fill(Tensor& t, std::vector<int64_t>& filler);
 };
 

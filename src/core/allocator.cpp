@@ -39,3 +39,7 @@ void Allocator::free(Tensor& t) {
     t.bytes = 0;
 }
 
+void Allocator::fill(Tensor& t, std::vector<int64_t>& filler) {
+    size_t size = t.numel();
+    for (int i = 0; i < size; i++) t.device[i] = filler[i];
+}

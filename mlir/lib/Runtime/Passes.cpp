@@ -35,9 +35,6 @@ namespace mlir::rt {
             auto shape = type.getShape();
 
             Tensor t = Allocator::allocate(shape.vec(), sizeof(type));
-            for (int i = 0; i < t.bytes; i++) 
-                t.device[i] = i;
-
             tensors[noise.getResult()] = &t;
             return;
         }
