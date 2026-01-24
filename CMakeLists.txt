@@ -4,7 +4,6 @@ project(gpu_runtime LANGUAGES C CXX CUDA)
 # Options
 option(GPU_RUNTIME_ENABLE_MLIR "Enable MLIR dialect + tools" ON)
 option(GPU_RUNTIME_ENABLE_DEBUG "Enable debug & visualization tools" ON)
-option(GPU_RUNTIME_BUILD_EXAMPLES "Build examples" ON)
 
 # Global settings
 set(CMAKE_CXX_STANDARD 17)
