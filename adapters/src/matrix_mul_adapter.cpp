@@ -5,6 +5,7 @@
 #include "debug/snapshot.h"
 #include "debug/guard.h"
 #include <cuda_runtime.h>
+#include <iostream>
 
 void rt_matrixMul(Tensor* A, Tensor* B, Tensor* C) {
     // Start kernel trace
@@ -13,6 +14,7 @@ void rt_matrixMul(Tensor* A, Tensor* B, Tensor* C) {
     dump_tensor(*B, "matrixMul:B");
     
     debug_step("before matrixMul");
+    std::cout << "balls" << "\n";
     
     // Launch the kernel
     int N = A->shape[0]; // assume square NxN

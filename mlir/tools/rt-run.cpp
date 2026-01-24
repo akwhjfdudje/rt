@@ -2,8 +2,9 @@
 #include "mlir/Parser/Parser.h"
 #include "mlir/IR/BuiltinOps.h"
 #include "llvm/Support/LogicalResult.h"
-#include "Runtime/RuntimeDialect.h"
 #include "core/tensor.h"
+
+#include "Runtime/RuntimeDialect.h"
 
 #include <map>
 
@@ -14,7 +15,7 @@ int main(int argc, char** argv) {
     }
 
     mlir::MLIRContext ctx;
-    ctx.getOrLoadDialect<rt::RT_Dialect>();
+    ctx.getOrLoadDialect<mlir::rt::RT_Dialect>();
 
     auto module = mlir::parseSourceFile(argv[1], &ctx);
     if (!module) return 1;
@@ -24,7 +25,7 @@ int main(int argc, char** argv) {
 
     // Walk ops in program order
     module->walk([&](mlir::Operation* op) {
-        rt::lowerOperation(op, tensors);
+            mlir::rt::lowerOperation(op, tensors);
     });
 
     return 0;

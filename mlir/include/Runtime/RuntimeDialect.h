@@ -7,15 +7,18 @@
 #include "mlir/IR/Builders.h"
 #include "core/tensor.h"
 
-#define GET_OP_CLASSES
-#include "./RuntimeDialect.h.inc"
+#include "Runtime/RuntimeDialect.h.inc"
 
-namespace rt {
-class RT_Dialect : public mlir::Dialect {
-public:
-  explicit RT_Dialect(mlir::MLIRContext *context);
-  static llvm::StringRef getDialectNamespace() { return "rt"; }
-  void initialize();
-};
-void lowerOperation(mlir::Operation* op, llvm::DenseMap<mlir::Value, Tensor*>& tensors);
+#define GET_OP_CLASSES
+#include "Runtime/RuntimeDialect.h.inc"
+
+namespace mlir::rt {
+    class RT_Dialect : public mlir::Dialect {
+    public:
+        explicit RT_Dialect(mlir::MLIRContext *context);
+        static llvm::StringRef getDialectNamespace() { return "rt"; }
+        void initialize();
+    };
+    void lowerOperation(mlir::Operation* op, llvm::DenseMap<mlir::Value, Tensor*>& tensors);
 }
+

@@ -4,7 +4,7 @@ include "mlir/IR/AttrTypeBase.td"
 
 def RT_Dialect : Dialect {
   let name = "rt";
-  let cppNamespace = "rt";
+  let cppNamespace = "::mlir::rt";
 }
 
 class RT_Op<string mnemonic, list<Trait> traits = []>
@@ -14,7 +14,7 @@ class RT_Op<string mnemonic, list<Trait> traits = []>
 def AllocOp : RT_Op<"alloc", [Pure]> {
   let summary = "Allocate a tensor";
   let results = (outs AnyTensor:$result);
-  let assemblyFormat = [{attr-dict `:` type($result)}];
+  let assemblyFormat = "attr-dict `:` type($result)";
 }
 
 
@@ -23,6 +23,6 @@ def MatMulOp : RT_Op<"matmul", [Pure]> {
   let summary = "Matrix multiplication";
   let arguments = (ins AnyTensor:$lhs, AnyTensor:$rhs);
   let results = (outs AnyTensor:$result);
-  //let assemblyFormat = [{$lhs `,` $rhs attr-dict `:` type($result)}];
+  let assemblyFormat = "$lhs `,` $rhs attr-dict `:` type($result)";
 }
 
