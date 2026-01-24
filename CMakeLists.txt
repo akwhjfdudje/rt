@@ -17,16 +17,15 @@ file(GLOB_RECURSE ADAPTER_SRC
     ${CMAKE_CURRENT_SOURCE_DIR}/adapters/src/*.cpp
 )
 
+file(GLOB_RECURSE CORE_SRC
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/core/*.cpp
+)
+
 # Core runtime library
 add_library(gpu_runtime STATIC
-    src/core/tensor.cpp
-    src/core/allocator.cpp
-    src/core/graph.cpp
-    src/core/op.cpp
-    src/core/stream.cpp
+    ${CORE_SRC}
     src/runtime_api.cpp
     ${ADAPTER_SRC}
-    ${CMAKE_CURRENT_SOURCE_DIR}/../cuda_kernels/include/
 )
 
 target_include_directories(gpu_runtime PUBLIC
