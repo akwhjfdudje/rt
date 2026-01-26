@@ -6,8 +6,6 @@
 
 #include "Runtime/RuntimeDialect.h"
 
-#include <map>
-
 int main(int argc, char** argv) {
     if (argc < 2) {
         printf("usage: rt-run <file.mlir>\n");
