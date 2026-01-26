@@ -13,32 +13,34 @@ void rt_generateNoise(Tensor* output, float min_val, float max_val, unsigned int
     trace_begin("generateNoise");
     
     debug_step("before generateNoise");
-    
+    dump_tensor(*output, "generateNoise:output");
     // Get number of elements
     int N = static_cast<int>(output->numel());
     
-    if (N > 0) {
-        // Allocate temporary host buffer
-        std::vector<float> host_buffer(N);
-        
-        // Generate noise (the function uses GPU internally and copies back to host)
-        generateNoise(host_buffer.data(), N, min_val, max_val, seed);
-        
-        // Copy to device memory
-        cudaMemcpy(
-            output->device,
-            host_buffer.data(),
-            N * sizeof(float),
-            cudaMemcpyHostToDevice
-        );
-        
-        cudaDeviceSynchronize();
-        
-        // Check for CUDA errors
-        cudaError_t err = cudaGetLastError();
-        if (err != cudaSuccess) {
-            std::cerr << "CUDA error in generateNoise: " << cudaGetErrorString(err) << std::endl;
-        }
+    // Allocate temporary host buffer
+    std::vector<float> host_buffer(N);
+    
+    // Generate noise (the function uses GPU internally and copies back to host)
+    generateNoise(host_buffer.data(), N, min_val, max_val, seed);
+    
+    // Copy to device memory
+    cudaError_t err = cudaMemcpy(
+        output->device,
+        host_buffer.data(),
+        N * sizeof(float),
+        cudaMemcpyHostToDevice
+    );
+    
+    if (err != cudaSuccess) {
+        std::cerr << "CUDA error in cudaMemcpy: " << cudaGetErrorString(err) << std::endl;
+    }
+    
+    cudaDeviceSynchronize();
+    
+    // Check for CUDA errors
+    err = cudaGetLastError();
+    if (err != cudaSuccess) {
+        std::cerr << "CUDA error in generateNoise: " << cudaGetErrorString(err) << std::endl;
     }
     
     debug_step("after generateNoise");

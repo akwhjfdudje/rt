@@ -10,8 +10,8 @@ namespace mlir::rt {
             auto type = alloc.getType();
             auto shape = type.getShape();
 
-            Tensor t = Allocator::allocate(shape.vec(), sizeof(type));
-            tensors[alloc.getResult()] = &t;
+            Tensor* t = new Tensor(Allocator::allocate(shape.vec(), sizeof(type)));
+            tensors[alloc.getResult()] = t;
             return;
         }
 
@@ -22,10 +22,10 @@ namespace mlir::rt {
             auto type = mm.getResult().getType();
             auto shape = type.getShape();
 
-            Tensor C = Allocator::allocate(shape.vec(), sizeof(type));
-            rt_matrixMul(A, B, &C);
+            Tensor* C = new Tensor(Allocator::allocate(shape.vec(), sizeof(type)));
+            rt_matrixMul(A, B, C);
 
-            tensors[mm.getResult()] = &C;
+            tensors[mm.getResult()] = C;
             return;
         }
 
