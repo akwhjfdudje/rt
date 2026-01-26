@@ -14,6 +14,8 @@ To add an operation to the dialect, see `mlir/include/Runtime/RuntimeDialect.td`
 
 The second part of the runtime is an interpreter pass that runs every op in a provided `.mlir` file in sequence, providing debug information along the way.
 
+To add to the interpreter pass, see `mlir/lib/Runtime/Passes.cpp` for examples on how to add operations to the pass.
+
 ### Fusion (WIP)
 
 # Adapters
