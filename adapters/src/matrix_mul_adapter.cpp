@@ -8,15 +8,16 @@
 #include <iostream>
 
 void rt_matrixMul(Tensor* A, Tensor* B, Tensor* C) {
-    // Start kernel trace
     trace_begin("matrixMul");
+
     dump_tensor(*A, "matrixMul:A");
     dump_tensor(*B, "matrixMul:B");
     
     debug_step("before matrixMul");
     
     // Launch the kernel
-    int N = A->shape[0]; // assume square NxN
+    int N = A->shape[0]; // assume A and B are square NxN
+
     matrixMul(
         reinterpret_cast<const float*>(A->device),
         reinterpret_cast<const float*>(B->device),

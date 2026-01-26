@@ -9,40 +9,23 @@
 #include <vector>
 
 void rt_generateNoise(Tensor* output, float min_val, float max_val, unsigned int seed) {
-    // Start kernel trace
     trace_begin("generateNoise");
     
     debug_step("before generateNoise");
     dump_tensor(*output, "generateNoise:output");
-    // Get number of elements
-    int N = static_cast<int>(output->numel());
+
+    int N = output->shape[0] * output->shape[1]; // assume output is 2D; need to flatten it
     
-    // Allocate temporary host buffer
-    std::vector<float> host_buffer(N);
-    
-    // Generate noise (the function uses GPU internally and copies back to host)
-    generateNoise(host_buffer.data(), N, min_val, max_val, seed);
-    
-    // Copy to device memory
-    cudaError_t err = cudaMemcpy(
-        output->device,
-        host_buffer.data(),
-        N * sizeof(float),
-        cudaMemcpyHostToDevice
+    generateNoise(
+        reinterpret_cast<float*>(output->device), 
+        N, 
+        min_val, 
+        max_val, 
+        seed
     );
     
-    if (err != cudaSuccess) {
-        std::cerr << "CUDA error in cudaMemcpy: " << cudaGetErrorString(err) << std::endl;
-    }
-    
     cudaDeviceSynchronize();
-    
-    // Check for CUDA errors
-    err = cudaGetLastError();
-    if (err != cudaSuccess) {
-        std::cerr << "CUDA error in generateNoise: " << cudaGetErrorString(err) << std::endl;
-    }
-    
+     
     debug_step("after generateNoise");
     dump_tensor(*output, "generateNoise:output");
     

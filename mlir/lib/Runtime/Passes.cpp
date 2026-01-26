@@ -32,7 +32,7 @@ namespace mlir::rt {
         if (auto noise = dyn_cast<NoiseOp>(op)) {
             Tensor* A = tensors[noise.getOperand()];
 
-            rt_generateNoise(A);
+            rt_generateNoise(A, -10.0f, 10.0f, 42u);
             tensors[noise.getResult()] = A;
             return;
         }
