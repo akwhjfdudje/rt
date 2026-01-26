@@ -10,10 +10,9 @@
 void rt_vectorAdd(Tensor* A, Tensor* B, Tensor* C) {
     trace_begin("vectorAdd");
 
-    dump_tensor(*A, "vectorAdd:A");
-    dump_tensor(*B, "vectorAdd:B");
-    
     debug_step("before vectorAdd");
+    dump_tensor(*A, "vectorAdd:A");
+    dump_tensor(*B, "vectorAdd:B"); 
     
     int N = A->shape[0] * A->shape[1]; // get all the bytes
 
