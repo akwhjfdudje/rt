@@ -42,3 +42,10 @@ def AddOp : RT_Op<"add", [Pure, SameOperandsAndResultType]> {
   let assemblyFormat = "$lhs `,` $rhs attr-dict `:` type($result)";
 }
 
+// %A1 = rt.relu %A : tensor<...>
+def ReLUOp : RT_Op<"relu", [Pure, SameOperandsAndResultType]> {
+  let summary = "Elementwise ReLU a tensor";
+  let arguments = (ins AnyTensor:$input);
+  let results = (outs AnyTensor:$result);
+  let assemblyFormat = "$input attr-dict `:` type($result)";
+}

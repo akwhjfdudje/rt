@@ -1,8 +1,6 @@
 #include "Runtime/RuntimeDialect.h"
 #include "mlir/Pass/Pass.h"
-#include "matrix_mul_adapter.h"
-#include "noise_adapter.h"
-#include "vector_add_adapter.h"
+#include "adapters.h"
 #include "core/allocator.h"
 
 namespace mlir::rt {
@@ -38,17 +36,25 @@ namespace mlir::rt {
             return;
         }
 
-        if (auto mm = dyn_cast<AddOp>(op)) {
-            Tensor* A = tensors[mm.getOperand(0)];
-            Tensor* B = tensors[mm.getOperand(1)];
+        if (auto add = dyn_cast<AddOp>(op)) {
+            Tensor* A = tensors[add.getOperand(0)];
+            Tensor* B = tensors[add.getOperand(1)];
 
-            auto type = mm.getResult().getType();
+            auto type = add.getResult().getType();
             auto shape = type.getShape();
 
             Tensor* C = new Tensor(Allocator::allocate(shape.vec(), sizeof(type)));
             rt_vectorAdd(A, B, C);
 
-            tensors[mm.getResult()] = C;
+            tensors[add.getResult()] = C;
+            return;
+        }
+
+        if (auto relu = dyn_cast<ReLUOp>(op)) {
+            Tensor* A = tensors[relu.getOperand()];
+
+            rt_vectorReLU(A);
+            tensors[relu.getResult()] = A;
             return;
         }
     }
