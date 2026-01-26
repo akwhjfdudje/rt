@@ -1,6 +1,7 @@
 #include "Runtime/RuntimeDialect.h"
 #include "mlir/Pass/Pass.h"
 #include "matrix_mul_adapter.h"
+#include "noise_adapter.h"
 #include "core/allocator.h"
 
 namespace mlir::rt {
@@ -31,11 +32,8 @@ namespace mlir::rt {
         if (auto noise = dyn_cast<NoiseOp>(op)) {
             Tensor* A = tensors[noise.getOperand()];
 
-            auto type = noise.getResult().getType();
-            auto shape = type.getShape();
-
-            Tensor t = Allocator::allocate(shape.vec(), sizeof(type));
-            tensors[noise.getResult()] = &t;
+            rt_generateNoise(A);
+            tensors[noise.getResult()] = A;
             return;
         }
     }
