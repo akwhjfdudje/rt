@@ -2,6 +2,7 @@
 #include "mlir/Pass/Pass.h"
 #include "matrix_mul_adapter.h"
 #include "noise_adapter.h"
+#include "vector_add_adapter.h"
 #include "core/allocator.h"
 
 namespace mlir::rt {
@@ -34,6 +35,20 @@ namespace mlir::rt {
 
             rt_generateNoise(A, -10.0f, 10.0f, 42u);
             tensors[noise.getResult()] = A;
+            return;
+        }
+
+        if (auto mm = dyn_cast<AddOp>(op)) {
+            Tensor* A = tensors[mm.getOperand(0)];
+            Tensor* B = tensors[mm.getOperand(1)];
+
+            auto type = mm.getResult().getType();
+            auto shape = type.getShape();
+
+            Tensor* C = new Tensor(Allocator::allocate(shape.vec(), sizeof(type)));
+            rt_vectorAdd(A, B, C);
+
+            tensors[mm.getResult()] = C;
             return;
         }
     }

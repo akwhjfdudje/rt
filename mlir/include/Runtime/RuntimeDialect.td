@@ -20,7 +20,7 @@ def AllocOp : RT_Op<"alloc", [Pure]> {
 
 // %C = rt.matmul %A, %B : tensor<...>
 def MatMulOp : RT_Op<"matmul", [Pure, SameOperandsAndResultType]> {
-  let summary = "Matrix multiplication";
+  let summary = "Matrix multiplication between two square matrices";
   let arguments = (ins AnyTensor:$lhs, AnyTensor:$rhs);
   let results = (outs AnyTensor:$result);
   let assemblyFormat = "$lhs `,` $rhs attr-dict `:` type($result)";
@@ -34,4 +34,11 @@ def NoiseOp : RT_Op<"noise", [Pure, SameOperandsAndResultType]> {
   let assemblyFormat = "$input attr-dict `:` type($result)";
 }
 
+// %C = rt.add %A, %B : tensor<...>
+def AddOp : RT_Op<"add", [Pure, SameOperandsAndResultType]> {
+  let summary = "Adds two tensors";
+  let arguments = (ins AnyTensor:$lhs, AnyTensor:$rhs);
+  let results = (outs AnyTensor:$result);
+  let assemblyFormat = "$lhs `,` $rhs attr-dict `:` type($result)";
+}
 

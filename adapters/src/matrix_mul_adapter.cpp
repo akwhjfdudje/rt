@@ -15,8 +15,7 @@ void rt_matrixMul(Tensor* A, Tensor* B, Tensor* C) {
     
     debug_step("before matrixMul");
     
-    // Launch the kernel
-    int N = A->shape[0]; // assume A and B are square NxN
+    int N = A->shape[0]; // assume all tensors are square NxN
 
     matrixMul(
         reinterpret_cast<const float*>(A->device),
