@@ -20,7 +20,7 @@ int main(int argc, char **argv) {
     auto module = mlir::parseSourceFile(argv[1], &ctx);
     if (!module) return 1;
 
-    module.get()->getParentRegion()->viewGraph("module");
+    module.get()->getParentRegion()->viewGraph("region");
 
     return 0;
 }
