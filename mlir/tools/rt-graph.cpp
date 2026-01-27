@@ -1,10 +1,7 @@
 #include "mlir/IR/MLIRContext.h"
-#include "mlir/IR/BuiltinOps.h"
 #include "mlir/Parser/Parser.h"
+#include "mlir/IR/BuiltinOps.h"
 #include "mlir/Transforms/ViewOpGraph.h"
-
-#include "llvm/Support/InitLLVM.h"
-#include "llvm/Support/raw_ostream.h"
 
 #include "Runtime/RuntimeDialect.h"
 
@@ -20,7 +17,7 @@ int main(int argc, char **argv) {
     auto module = mlir::parseSourceFile(argv[1], &ctx);
     if (!module) return 1;
 
-    module.get()->getParentRegion()->viewGraph("region");
+    module->getRegion(0).viewGraph();
 
     return 0;
 }

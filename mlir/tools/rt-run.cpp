@@ -18,10 +18,8 @@ int main(int argc, char** argv) {
     auto module = mlir::parseSourceFile(argv[1], &ctx);
     if (!module) return 1;
 
-    // Maps MLIR SSA values to runtime tensors
     llvm::DenseMap<mlir::Value, Tensor*> tensors;
 
-    // Walk ops in program order
     module->walk([&](mlir::Operation* op) {
             mlir::rt::lowerOperation(op, tensors);
     });
