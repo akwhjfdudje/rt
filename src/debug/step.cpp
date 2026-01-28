@@ -1,7 +1,7 @@
 #include "debug/step.h"
 #include <cstdio>
 
-static bool g_step_enabled = true;
+static bool g_step_enabled = false;
 
 void debug_enable_steps(bool enable) {
     g_step_enabled = enable;

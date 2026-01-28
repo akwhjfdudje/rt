@@ -10,9 +10,10 @@
 void rt_vectorAdd(Tensor* A, Tensor* B, Tensor* C) {
     trace_begin("vectorAdd");
 
-    debug_step("before vectorAdd");
     dump_tensor(*A, "vectorAdd:A");
     dump_tensor(*B, "vectorAdd:B"); 
+
+    debug_step("before vectorAdd");
     
     int N = A->shape[0] * A->shape[1]; // get all the bytes
 
@@ -25,8 +26,9 @@ void rt_vectorAdd(Tensor* A, Tensor* B, Tensor* C) {
 
     cudaDeviceSynchronize();
 
-    debug_step("after vectorAdd");
     dump_tensor(*C, "vectorAdd:C");
+
+    debug_step("after vectorAdd");
 
     guard_nan_inf(*C, "vectorAdd:C");
 

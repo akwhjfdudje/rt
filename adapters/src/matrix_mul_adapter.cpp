@@ -26,8 +26,9 @@ void rt_matrixMul(Tensor* A, Tensor* B, Tensor* C) {
 
     cudaDeviceSynchronize();
 
-    debug_step("after matrixMul");
     dump_tensor(*C, "matrixMul:C");
+
+    debug_step("after matrixMul");
 
     guard_nan_inf(*C, "matrixMul:C");
 
