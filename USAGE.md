@@ -42,3 +42,5 @@ Note that the build is configured to "Debug". This is because MLIR compiles to "
 # Running
 
 To run, use the `rt-run` tool with the chosen `.mlir` file.
+
+To see a graph visualization of written `.mlir`, use the `rt-graph` tool.
