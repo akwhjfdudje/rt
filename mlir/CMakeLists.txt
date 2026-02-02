@@ -9,7 +9,7 @@ target_include_directories(RuntimeMLIR PUBLIC
 )
 
 target_link_libraries(RuntimeMLIR PUBLIC
-    gpu_runtime
+    runtime
     MLIRAnalysis
     MLIRAsmParser
     MLIRDialect

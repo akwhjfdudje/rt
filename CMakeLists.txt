@@ -1,9 +1,9 @@
 cmake_minimum_required(VERSION 3.20)
-project(gpu_runtime LANGUAGES C CXX CUDA)
+project(runtime LANGUAGES C CXX CUDA)
 
 # Options
-option(GPU_RUNTIME_ENABLE_MLIR "Enable MLIR dialect + tools" ON)
-option(GPU_RUNTIME_ENABLE_DEBUG "Enable debug & visualization tools" ON)
+option(RUNTIME_ENABLE_MLIR "Enable MLIR dialect + tools" ON)
+option(RUNTIME_ENABLE_DEBUG "Enable debug & visualization tools" ON)
 
 # Global settings
 set(CMAKE_CXX_STANDARD 17)
@@ -22,26 +22,26 @@ file(GLOB_RECURSE CORE_SRC
 )
 
 # Core runtime library
-add_library(gpu_runtime STATIC
+add_library(runtime STATIC
     ${CORE_SRC}
     src/runtime_api.cpp
     ${ADAPTER_SRC}
 )
 
-target_include_directories(gpu_runtime PUBLIC
+target_include_directories(runtime PUBLIC
     include
     ${CMAKE_CURRENT_SOURCE_DIR}/../cuda_kernels/include
     ${CMAKE_CURRENT_SOURCE_DIR}/adapters/include
 )
 
-target_link_libraries(gpu_runtime PUBLIC
+target_link_libraries(runtime PUBLIC
     CUDA::cudart
     ${CMAKE_CURRENT_SOURCE_DIR}/../cuda_kernels/build/Release/cuda_kernels.lib
 )
 
 # Debug / visualization
-if (GPU_RUNTIME_ENABLE_DEBUG)
-    target_sources(gpu_runtime PRIVATE
+if (RUNTIME_ENABLE_DEBUG)
+    target_sources(runtime PRIVATE
         src/debug/trace.cpp
         src/debug/snapshot.cpp
         src/debug/guard.cpp
@@ -51,11 +51,11 @@ if (GPU_RUNTIME_ENABLE_DEBUG)
         src/debug/record.cpp
     )
 
-    target_compile_definitions(gpu_runtime PUBLIC GPU_RUNTIME_DEBUG=1)
+    target_compile_definitions(runtime PUBLIC RUNTIME_DEBUG=1)
 endif()
 
 # MLIR integration
-if (GPU_RUNTIME_ENABLE_MLIR)
+if (RUNTIME_ENABLE_MLIR)
     find_package(MLIR REQUIRED CONFIG)
 
     message(STATUS "Found MLIR: ${MLIR_DIR}")
