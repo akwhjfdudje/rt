@@ -6,7 +6,6 @@
 #include "debug/guard.h"
 #include <cuda_runtime.h>
 #include <iostream>
-#include <vector>
 
 void rt_generateNoise(Tensor* output, float min_val, float max_val, unsigned int seed) {
     trace_begin("generateNoise");

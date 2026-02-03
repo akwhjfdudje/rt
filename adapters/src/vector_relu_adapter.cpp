@@ -6,7 +6,6 @@
 #include "debug/guard.h"
 #include <cuda_runtime.h>
 #include <iostream>
-#include <vector>
 
 void rt_vectorReLU(Tensor* output) {
     trace_begin("vectorReLU");
