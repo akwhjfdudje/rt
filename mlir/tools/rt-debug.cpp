@@ -8,7 +8,7 @@
 #include "Runtime/RuntimeDialect.h"
 
 int main(int argc, char** argv) {
-    // Enable debugging:
+    // Enable steps:
     debug_enable_steps(true);
 
     if (argc < 2) {

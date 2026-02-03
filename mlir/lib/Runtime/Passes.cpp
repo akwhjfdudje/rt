@@ -3,7 +3,8 @@
 #include "adapters.h"
 #include "core/allocator.h"
 
-namespace mlir::rt {
+namespace mlir {
+namespace rt {
     void lowerOperation(mlir::Operation* op, llvm::DenseMap<Value, Tensor*>& tensors) {
         if (auto alloc = dyn_cast<AllocOp>(op)) {
             auto type = alloc.getType();
@@ -67,4 +68,5 @@ namespace mlir::rt {
         }
     }
 
-} // namespace mlir::rt
+} // namespace rt
+} // namespace mlir
