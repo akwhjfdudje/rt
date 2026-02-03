@@ -27,9 +27,11 @@ target_link_libraries(RuntimeMLIR PUBLIC
 )
 
 add_executable(rt-run tools/rt-run.cpp)
+add_executable(rt-debug tools/rt-debug.cpp)
 add_executable(rt-graph tools/rt-graph.cpp)
 
 target_link_libraries(rt-run RuntimeMLIR)
+target_link_libraries(rt-debug RuntimeMLIR)
 target_link_libraries(rt-graph RuntimeMLIR)
 
 add_custom_command(TARGET rt-run POST_BUILD

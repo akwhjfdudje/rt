@@ -1,4 +1,4 @@
-#include "vector_add_adapter.h"
+#include "vector_relu_adapter.h"
 #include "activate/activate.cuh"
 #include "debug/trace.h"
 #include "debug/step.h"
